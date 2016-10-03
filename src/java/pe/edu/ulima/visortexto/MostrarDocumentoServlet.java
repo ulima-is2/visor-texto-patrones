@@ -15,30 +15,21 @@ public class MostrarDocumentoServlet extends HttpServlet {
     protected void doPost(
             HttpServletRequest req,
             HttpServletResponse resp) throws ServletException, IOException {
+        /*
+        1. Recibe parametros del request
+        2. Realiza alguna tarea con los parametros
+        3. Devuelve una respuesta
+        */
 
         String titulo = req.getParameter("titulo");
         String contenido = req.getParameter("contenido");
         String tipo = req.getParameter("tipo");
-
-        if (tipo.equals("pdf")) {
-            resp.setContentType("application/pdf");
-            
-            ModoVisualizacionAdapter adapter = new PDFAdapter();            
-            ByteArrayOutputStream baos = 
-                    adapter.renderizar(titulo, contenido);
-            baos.writeTo(resp.getOutputStream());
-            
-            resp.getOutputStream().flush();
-        } else if (tipo.equals("html")) {
-            ModoVisualizacionAdapter adapter = new HTMLAdapter();
-            ByteArrayOutputStream baos = 
-                    adapter.renderizar(titulo, contenido);
-            baos.writeTo(resp.getOutputStream());
-            resp.getOutputStream().flush();
-        }
-
+        
+        GestorRenderizado gestor = new GestorRenderizado();
+        ByteArrayOutputStream baos = 
+                gestor.renderizar(titulo, contenido, tipo);
+        
+        baos.writeTo(resp.getOutputStream());
+        resp.getOutputStream().flush();
     }
-
-    
-
 }
