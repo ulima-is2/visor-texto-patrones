@@ -2,6 +2,18 @@
 package pe.edu.ulima.visortexto;
 
 public class ModoVisualizacionFactory {
+    private static ModoVisualizacionFactory singleton 
+            = null;
+    
+    public static ModoVisualizacionFactory getInstance(){
+        if (singleton == null){
+            singleton = new ModoVisualizacionFactory();
+        }
+        return singleton;
+    }
+    
+    private ModoVisualizacionFactory(){}
+    
     public ModoVisualizacionAdapter obtenerAdapter(String tipo){
         if (tipo.equals("pdf")){
             return new PDFAdapter();
